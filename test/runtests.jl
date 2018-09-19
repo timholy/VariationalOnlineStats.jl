@@ -1,5 +1,5 @@
 using VariationalOnlineStats
-using Base.Test
+using Test, Statistics
 
 for n = 1:2
     for i = 1:100
