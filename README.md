@@ -1,5 +1,6 @@
 # VariationalOnlineStats
 
+[![CI](https://github.com/timholy/VariationalOnlineStats.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/timholy/VariationalOnlineStats.jl/actions/workflows/ci.yml)
 [![codecov.io](http://codecov.io/github/timholy/VariationalOnlineStats.jl/coverage.svg?branch=master)](http://codecov.io/github/timholy/VariationalOnlineStats.jl?branch=master)
 
 This package provides an online estimate (`O(1)` in storage and `O(N)` in operations) of the [median](https://en.wikipedia.org/wiki/Median).
@@ -11,12 +12,12 @@ julia> using Statistics, VariationalOnlineStats
 julia> median(1:101)
 51.0
 
-julia> MedianOnline(1:101)
+julia> MedianOnline(1:101)            # 1:101 is sorted, a worst-case scenario
 MedianOnline(med=34.683520091205864, mad=33.301973872578365, n=101)   # pretty far off
 
 julia> using Random
 
-julia> MedianOnline(randperm(101))
+julia> MedianOnline(randperm(101))    # the same data, but randomly ordered
 MedianOnline(med=49.04313591042025, mad=26.084366886470903, n=101)    # reasonably close
 ```
 
