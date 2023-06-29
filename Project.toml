@@ -1,5 +1,5 @@
 name = "VariationalOnlineStats"
-uuid = "9b4fd325-e33b-5b3a-847c-d938fc5e8359"
+uuid = "19baa3cf-15a9-54b0-b671-5d0d7003ae5b"
 authors = ["Tim Holy <tim.holy@gmail.com>"]
 version = "1.0.0"
 
