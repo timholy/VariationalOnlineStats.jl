@@ -15,6 +15,13 @@ MedianOnline{T}(x) where T<:AbstractFloat = MedianOnline{T}(x, zero(T), 1)
 MedianOnline(x::T) where {T<:AbstractFloat} = MedianOnline{T}(x)
 MedianOnline(x::Number) = MedianOnline{float(typeof(x))}(x)
 
+# For round-tripping with printing
+MedianOnline(; med::T, mad::T, n::Int) where {T<:AbstractFloat} = MedianOnline{T}(med, mad, n)
+
+function Base.show(io::IO, m::MedianOnline{T}) where {T<:AbstractFloat}
+    print(io, "MedianOnline(med=", m.med, ", mad=", m.mad, ", n=", m.n, ")")
+end
+
 """
     MedianOnline{T}(list) → updater
     MedianOnline(list) → updater

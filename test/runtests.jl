@@ -18,4 +18,7 @@ using Test, Statistics
     @test abs(Float64(MedianOnline{Float64}(v)) - 6) < 0.1
     @test Float64(MedianOnline{Float64}(1:11)) > 4.5
     @test Float64(MedianOnline{Float64}(11:-1:1)) < 7.5
+
+    m = MedianOnline([1, 3, 2])
+    @test eval(Meta.parse(repr(m))) == m
 end
