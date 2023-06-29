@@ -5,25 +5,46 @@ using Base.Iterators
 
 export MedianOnline
 
-struct MedianOnline{T}
+struct MedianOnline{T<:AbstractFloat}
     med::T   # median
     mad::T   # mean absolute deviation
     n::Int
 end
-(::Type{MedianOnline{T}})(x) where T = MedianOnline{T}(x, zero(T), 1)
+MedianOnline{T}(x) where T<:AbstractFloat = MedianOnline{T}(x, zero(T), 1)
 
 MedianOnline(x::T) where {T<:AbstractFloat} = MedianOnline{T}(x)
+MedianOnline(x::Number) = MedianOnline{float(typeof(x))}(x)
 
+"""
+    MedianOnline{T}(list) → updater
+    MedianOnline(list) → updater
+
+Return an `updater` object that stores an estimate of the median of `list`.
+This is an online algorithm that uses constant memory and is `O(n)` in the length of `list`.
+See [median(::MedianOnline, x)](@ref) for a description of `updater`.
+"""
 function MedianOnline{T}(v::AbstractVector{<:Number}) where {T<:AbstractFloat}
-    m = MedianOnline{T}(first(v))
+    m = MedianOnline{T}(first(v)::Number)
     for x in drop(v, 1)
-        m = median(m, x)
+        m = median(m, x::Number)
     end
     m
 end
 MedianOnline(v::AbstractVector{T}) where {T<:AbstractFloat} = MedianOnline{T}(v)
+MedianOnline(v::AbstractVector{T}) where {T<:Number} = MedianOnline{float(T)}(v)
 
-@inline function Statistics.median(m::MedianOnline{T}, x) where {T}
+"""
+    median(updater::MedianOnline, x) → updater′
+
+Update the running median with new value `x`.
+
+Upon return:
+
+- `updater.med` is an estimate of the median of `list`;
+- `updater.mad` is an estimate of the mean absolute deviation;
+- `updater.n` is the number of values seen so far.
+"""
+function Statistics.median(m::MedianOnline{T}, x::Number) where {T}
     f = 1/(m.n + 1)  # fraction of contribution to mad
     Δx = x - m.med
     aΔx = abs(Δx)
